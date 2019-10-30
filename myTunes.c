@@ -22,16 +22,18 @@ void print_list(struct song_node *n) {
   char s[500] = "";
   char s2[100] = "";
   struct song_node *x = n;
-  sprintf(s2,"%s: %s | ",x->artist,x->name);
-  strcat(s, s2);
-  strcat(s, " ");
+  strcat(s, x->artist);
+  strcat(s, ": ");
+  strcat(s, x->name);
+  strcat(s, " | ");
   while(x->next) {
     x = x->next;
-    sprintf(s2,"%s: %s | ",x->artist,x->name);
-    strcat(s, s2);
-    strcat(s, " ");
+    strcat(s, x->artist);
+    strcat(s, ": ");
+    strcat(s, x->name);
+    strcat(s, " | ");
   }
-  printf("[ %s]\n",s);
+  printf("%s\n",s);
 }
 
 
@@ -81,4 +83,16 @@ struct song_node * remove_list(struct song_node *front, char *na) {
     }
     return front;
   }
+}
+
+
+int main() {
+  struct song_node *start = malloc(sizeof(struct song_node));
+  strcpy(start->name,"song");
+  strcpy(start->artist,"band");
+  start = insert_front(start,"band2","song2");
+  start = insert_front(start,"band3","song3");
+  print_list(start);
+
+  return 0;
 }
