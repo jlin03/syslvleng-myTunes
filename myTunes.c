@@ -61,7 +61,8 @@ struct song_node * insert_ordered(struct song_node *n, char *na, char *a, int so
       return x;
     }
     else {
-      while(start->next && strcmp(x->name,start->next->name) > 0) {
+      print_list(n);
+      while(start->next && strcmp(x->name,start->name) > 0) {
         prev = start;
         start = start->next;
       }
@@ -70,9 +71,10 @@ struct song_node * insert_ordered(struct song_node *n, char *na, char *a, int so
         x->next = start;
         return n;
       }
-
-
-
+      else {
+        x->next = start->next;
+        start->next = x;
+      }
 
     }
   }
@@ -83,21 +85,30 @@ struct song_node * insert_ordered(struct song_node *n, char *na, char *a, int so
     struct song_node *prev = n;
     strcpy(x->name,na);
     strcpy(x->artist,a);
-    if(strcmp(x->name,start->next->next->artist) < 0) {
+    if(strcmp(x->artist,start->next->artist) < 0) {
       x->next = n;
       return x;
     }
     else {
-      while(start->next->next && strcmp(x->artist,start->next->next->artist) > 0) {
+      print_list(n);
+      while(start->next && strcmp(x->artist,start->artist) > 0) {
         prev = start;
         start = start->next;
       }
-      prev->next = x;
-      x->next = start;
-      return n;
+      if(strcmp(x->artist,start->artist) < 0) {
+        prev->next = x;
+        x->next = start;
+        return n;
+      }
+      else {
+        x->next = start->next;
+        start->next = x;
+      }
     }
+
   }
-  return n;
+
+    return NULL;
 }
 
 
@@ -144,7 +155,7 @@ int main() {
   strcpy(start->artist,"band4");
   start = insert_front(start,"song3","band3");
   start = insert_front(start,"song2","band2");
-  start = insert_ordered(start,"song5","band5",1);
+  start = insert_ordered(start,"song1","band5",0);
   print_list(start);
 
   return 0;
