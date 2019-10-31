@@ -3,6 +3,7 @@
 #include <time.h>
 #include <string.h>
 
+
 struct song_node{
   char name[100];
   char artist[100];
@@ -129,7 +130,7 @@ struct song_node * free_list(struct song_node *n) {
 
 }
 
-struct song_node * find(struct song_node *n,char *na, char *a) {
+struct song_node * find_list(struct song_node *n,char *na, char *a) {
   if(strcmp(a,n->artist) == 0 && strcmp(na,n->name) == 0) {
     return n;
   }
@@ -143,7 +144,23 @@ struct song_node * find(struct song_node *n,char *na, char *a) {
 }
 
 
+
+struct song_node * random_list(struct song_node *n) {
+  while(n->next) {
+    if(rand() % 10 < 4) {
+      return n;
+    }
+    else {
+      n = n->next;
+    }
+  }
+  return n;
+}
+
+
+
 int main() {
+  srand(time(NULL));
   struct song_node *start = malloc(sizeof(struct song_node));
   strcpy(start->name,"song4");
   strcpy(start->artist,"band4");
@@ -151,7 +168,8 @@ int main() {
   start = insert_front(start,"song2","band2");
   start = insert_ordered(start,"song1","band5",0);
   print_list(start);
-  printf("%p",find(start,"song1","band5"));
+  struct song_node *r = random_list(start);
+  printf("%s %s",r->artist,r->name);
 
   return 0;
 }
