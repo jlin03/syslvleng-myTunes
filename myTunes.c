@@ -74,6 +74,7 @@ struct song_node * insert_ordered(struct song_node *n, char *na, char *a, int so
       else {
         x->next = start->next;
         start->next = x;
+        return n;
       }
 
     }
@@ -103,6 +104,7 @@ struct song_node * insert_ordered(struct song_node *n, char *na, char *a, int so
       else {
         x->next = start->next;
         start->next = x;
+        return n;
       }
     }
 
@@ -155,7 +157,7 @@ int main() {
   strcpy(start->artist,"band4");
   start = insert_front(start,"song3","band3");
   start = insert_front(start,"song2","band2");
-  start = insert_ordered(start,"song1","band5",0);
+  start = insert_ordered(start,"song5","band1",1);
   print_list(start);
 
   return 0;
