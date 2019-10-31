@@ -121,7 +121,7 @@ struct song_node * free_list(struct song_node *n) {
     prev = x;
     free(prev);
     while(x->next) {
-        x = x->next;
+        x = x->next;      print_list(n);
         prev = x;
         printf("Freeing: %s: %s\n",x->artist,x->name);
         free(prev);
@@ -129,25 +129,17 @@ struct song_node * free_list(struct song_node *n) {
 
 }
 
-struct song_node * remove_list(struct song_node *front, char *na) {
-  printf("Removing: %s: %s\n",front->artist,na);
-  struct song_node *x = front;
-  if(strcmp(front->name,na) == 0) {
-    struct song_node *newStart = front->next;
-    free(front);
-    return newStart;
+struct song_node * find(struct song_node *n,char *na, char *a) {
+  if(strcmp(a,n->artist) == 0 && strcmp(na,n->name) == 0) {
+    return n;
   }
-  else {
-    while(x->next) {
-      struct song_node *current = x;
-      x = x->next;
-      if(strcmp(front->name,na) == 0) {
-        current->next = x->next;
-        free(x);
-      }
+  while(n->next) {
+    n = n->next;
+    if(strcmp(a,n->artist) == 0 && strcmp(na,n->name) == 0) {
+      return n;
     }
-    return front;
   }
+  return NULL;
 }
 
 
@@ -157,8 +149,9 @@ int main() {
   strcpy(start->artist,"band4");
   start = insert_front(start,"song3","band3");
   start = insert_front(start,"song2","band2");
-  start = insert_ordered(start,"song5","band1",1);
+  start = insert_ordered(start,"song1","band5",0);
   print_list(start);
+  printf("%p",find(start,"song1","band5"));
 
   return 0;
 }
