@@ -4,6 +4,8 @@
 #include <string.h>
 
 
+struct song_node * table[27];
+
 struct song_node{
   char name[100];
   char artist[100];
@@ -57,27 +59,38 @@ struct song_node * insert_ordered(struct song_node *n, char *na, char *a, int so
     struct song_node *prev = n;
     strcpy(x->name,na);
     strcpy(x->artist,a);
-    if(strcmp(x->name,start->next->name) < 0) {
-      x->next = n;
-      return x;
-    }
-    else {
-      print_list(n);
-      while(start->next && strcmp(x->name,start->name) > 0) {
-        prev = start;
-        start = start->next;
-      }
+    if(n->next) {
       if(strcmp(x->name,start->name) < 0) {
-        prev->next = x;
-        x->next = start;
-        return n;
+        x->next = n;
+        return x;
       }
       else {
-        x->next = start->next;
-        start->next = x;
-        return n;
-      }
+        print_list(n);
+        while(start->next && strcmp(x->name,start->name) > 0) {
+          prev = start;
+          start = start->next;
+        }
+        if(strcmp(x->name,start->name) < 0) {
+          prev->next = x;
+          x->next = start;
+          return n;
+        }
+        else {
+          x->next = start->next;
+          start->next = x;
+          return n;
+        }
 
+      }
+    }
+    else {
+      if(strcmp(x->name,n->name) < 0) {
+        x->next = n;
+        return x;
+      }
+      else {
+        n->next = x;
+      }
     }
   }
   if(song == 0) {
@@ -87,25 +100,36 @@ struct song_node * insert_ordered(struct song_node *n, char *na, char *a, int so
     struct song_node *prev = n;
     strcpy(x->name,na);
     strcpy(x->artist,a);
-    if(strcmp(x->artist,start->next->artist) < 0) {
-      x->next = n;
-      return x;
-    }
-    else {
-      print_list(n);
-      while(start->next && strcmp(x->artist,start->artist) > 0) {
-        prev = start;
-        start = start->next;
-      }
-      if(strcmp(x->artist,start->artist) < 0) {
-        prev->next = x;
-        x->next = start;
-        return n;
+    if(n->next) {
+      if(strcmp(x->artist,start->next->artist) < 0) {
+        x->next = n;
+        return x;
       }
       else {
-        x->next = start->next;
-        start->next = x;
-        return n;
+        print_list(n);
+        while(start->next && strcmp(x->artist,start->artist) > 0) {
+          prev = start;
+          start = start->next;
+        }
+        if(strcmp(x->artist,start->artist) < 0) {
+          prev->next = x;
+          x->next = start;
+          return n;
+        }
+        else {
+          x->next = start->next;
+          start->next = x;
+          return n;
+        }
+      }
+    }
+    else {
+      if(strcmp(x->artist,n->artist) < 0) {
+        x->next = n;
+        return x;
+      }
+      else {
+        n->next = x;
       }
     }
 
@@ -171,6 +195,33 @@ struct song_node * random_list(struct song_node *n) {
 }
 
 
+void add(char *na, char *a) {
+  int f = a[0]-97;
+  if(f<26 && f>=0) {
+    if(table[f]) {
+      //printf("%s %s\n", na , a);
+      table[f] = insert_ordered(table[f],na,a,0);
+      printf("%s %s\n",table[f]->artist,table[f]->name);
+    }
+    else {
+      table[f] = malloc(sizeof(struct song_node));
+      strcpy(table[f]->artist,a);
+      strcpy(table[f]->name,na);
+      //printf("%s %s\n", table[f]->name , table[f]->artist);
+    }
+  }
+  else {
+    if(table[26]) {
+      table[f] = insert_ordered(table[f],na,a,0);
+    }
+    else {
+      table[26] = malloc(sizeof(struct song_node));
+      strcpy(table[f]->artist,a);
+      strcpy(table[f]->name,na);
+    }
+  }
+
+}
 
 int main() {
   srand(time(NULL));
@@ -184,7 +235,22 @@ int main() {
   struct song_node *r = random_list(start);
   printf("\n%s %s",r->artist,r->name);
   r = find_artist_song(start,"band3");
-  printf("\n%s %s",r->artist,r->name);
+  printf("\n%s %s\n\n",r->artist,r->name);
+
+  add("song3","band3");
+  add("song1","band1");
+  add("song6","band7");
+  add("song3","no");
+  add("song1","fnirwkn");
+  add("song6","uyre");
+
+  for(int i = 0; i < 27; i++) {
+    if(table[i]) {
+      //print_list(table[i]);
+    }
+  }
+  printf("%s %s\n",table[1]->artist,table[1]->name);
+  print_list(table[1]);
 
   return 0;
 }
