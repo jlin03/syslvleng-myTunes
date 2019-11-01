@@ -122,7 +122,7 @@ struct song_node * free_list(struct song_node *n) {
     prev = x;
     free(prev);
     while(x->next) {
-        x = x->next;      print_list(n);
+        x = x->next;
         prev = x;
         printf("Freeing: %s: %s\n",x->artist,x->name);
         free(prev);
@@ -137,6 +137,19 @@ struct song_node * find_list(struct song_node *n,char *na, char *a) {
   while(n->next) {
     n = n->next;
     if(strcmp(a,n->artist) == 0 && strcmp(na,n->name) == 0) {
+      return n;
+    }
+  }
+  return NULL;
+}
+
+struct song_node * find_artist_song(struct song_node *n, char *a) {
+  if(strcmp(a,n->artist) == 0) {
+    return n;
+  }
+  while(n->next) {
+    n = n->next;
+    if(strcmp(a,n->artist) == 0) {
       return n;
     }
   }
@@ -169,7 +182,9 @@ int main() {
   start = insert_ordered(start,"song1","band5",0);
   print_list(start);
   struct song_node *r = random_list(start);
-  printf("%s %s",r->artist,r->name);
+  printf("\n%s %s",r->artist,r->name);
+  r = find_artist_song(start,"band3");
+  printf("\n%s %s",r->artist,r->name);
 
   return 0;
 }
