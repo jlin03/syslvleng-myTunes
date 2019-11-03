@@ -36,7 +36,7 @@ void print_list(struct song_node *n) {
     strcat(s, x->name);
     strcat(s, " | ");
   }
-  printf("%s\n",s);
+  printf("%s",s);
 }
 
 
@@ -167,6 +167,19 @@ struct song_node * find_list(struct song_node *n,char *na, char *a) {
   return NULL;
 }
 
+
+struct song_node * find_library(char *na, char *a) {
+    int f = a[0]-97;
+    if(f<26 && f>=0) {
+        return find_list(table[f],na,a);
+    }
+    else {
+        return find_list(table[26],na,a);
+    }
+    return NULL;
+}
+
+
 struct song_node * find_artist_song(struct song_node *n, char *a) {
   if(strcmp(a,n->artist) == 0) {
     return n;
@@ -180,7 +193,27 @@ struct song_node * find_artist_song(struct song_node *n, char *a) {
   return NULL;
 }
 
+struct song_node * find_artist(struct song_node *n, char *a) {
+    int f = a[0]-97;
+    if(f<26 && f>=0) {
+        return find_artist_song(table[f],a);
+    }
+    else {
+        return find_artist_song(table[26],a);
+    }
+    return NULL;
+}
 
+void print_artist_letter(char x) {
+    int f = x-97;
+    if(f<26 && f>=0) {
+        return print_list(table[f]);
+    }
+    else {
+        return print_list(table[26]);
+    }
+    
+}
 
 struct song_node * random_list(struct song_node *n) {
   while(n->next) {
@@ -199,7 +232,6 @@ void add(char *na, char *a) {
   int f = a[0]-97;
   if(f<26 && f>=0) {
     if(table[f]) {
-      //printf("%s %s\n", na , a);
       table[f] = insert_ordered(table[f],na,a,0);
       printf("%s %s\n",table[f]->artist,table[f]->name);
     }
@@ -207,7 +239,6 @@ void add(char *na, char *a) {
       table[f] = malloc(sizeof(struct song_node));
       strcpy(table[f]->artist,a);
       strcpy(table[f]->name,na);
-      //printf("%s %s\n", table[f]->name , table[f]->artist);
     }
   }
   else {
@@ -246,11 +277,13 @@ int main() {
 
   for(int i = 0; i < 27; i++) {
     if(table[i]) {
-      //print_list(table[i]);
+      print_list(table[i]);
     }
   }
-  printf("%s %s\n",table[1]->artist,table[1]->name);
-  print_list(table[1]);
+  
+  r = find_library("song1","fnirwkn");
+  printf("\n%s %s\n\n",r->artist,r->name);
+
 
   return 0;
 }
