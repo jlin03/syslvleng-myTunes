@@ -2,22 +2,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <string.h>
-
-
-struct song_node * table[27];
-
-struct song_node{
-  char name[100];
-  char artist[100];
-  struct song_node *next;
-};
-
-
-void print_list(struct song_node *n);
-struct song_node * insert_front(struct song_node *n, char *na, char *a);
-struct song_node * free_list(struct song_node *n);
-
-
+#include "myTunes.h"
 
 
 void print_list(struct song_node *n) {
@@ -101,7 +86,6 @@ void shuffle() {
 
 
 struct song_node * insert_front(struct song_node *n, char *na, char *a) {
-  printf("Inserting: %s: %s\n",a,na);
   struct song_node *x = malloc(sizeof(struct song_node));
   strcpy(x->name,na);
   strcpy(x->artist,a);
@@ -111,7 +95,6 @@ struct song_node * insert_front(struct song_node *n, char *na, char *a) {
 
 struct song_node * insert_ordered(struct song_node *n, char *na, char *a, int song) {
   if(song == 1) {
-    printf("Inserting: %s: %s\n",a,na);
     struct song_node *x = malloc(sizeof(struct song_node));
     struct song_node *start = n;
     struct song_node *prev = n;
@@ -152,7 +135,6 @@ struct song_node * insert_ordered(struct song_node *n, char *na, char *a, int so
     }
   }
   if(song == 0) {
-    printf("Inserting: %s: %s\n",a,na);
     struct song_node *x = malloc(sizeof(struct song_node));
     struct song_node *start = n;
     struct song_node *prev = n;
@@ -223,7 +205,6 @@ struct song_node * free_list(struct song_node *n) {
 
 struct song_node * remove_list(int f, struct song_node *n, char *na, char *a) {
   struct song_node *x = n;
-  printf("\n %s %s",na,a);
   if(strcmp(a,n->artist) == 0 && strcmp(na,n->name) == 0) {
     if(n->next) {
         struct song_node *newStart = n->next;
@@ -333,7 +314,6 @@ void add(char *na, char *a) {
   if(f<26 && f>=0) {
     if(table[f]) {
       table[f] = insert_ordered(table[f],na,a,0);
-      printf("%s %s\n",table[f]->artist,table[f]->name);
     }
     else {
       table[f] = malloc(sizeof(struct song_node));
@@ -354,40 +334,3 @@ void add(char *na, char *a) {
 
 }
 
-int main() {
-  srand(time(NULL));
-  struct song_node *start = malloc(sizeof(struct song_node));
-  strcpy(start->name,"song4");
-  strcpy(start->artist,"band4");
-  start = insert_front(start,"song3","band3");
-  start = insert_front(start,"song2","band2");
-  start = insert_ordered(start,"song1","band5",0);
-  print_list(start);
-  struct song_node *r = random_list(start);
-  printf("\n%s %s",r->artist,r->name);
-  r = find_artist_song(start,"band3");
-  printf("\n%s %s\n\n",r->artist,r->name);
-
-  add("song3","band3");
-  add("song1","band1");
-  add("song6","band7");
-  add("song3","no");
-  add("song1","fnirwkn");
-  add("song6","uyre");
-
-  print_all();
-  
-  r = find_library("song1","fnirwkn");
-  printf("\n%s %s\n\n",r->artist,r->name);
-
-    shuffle();
-    
-    remove_library("song6","uyre");
-    printf("\n");
-    print_all();
-    
-    clear_library();
-    print_all();
-
-  return 0;
-}
