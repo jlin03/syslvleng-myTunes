@@ -4,7 +4,6 @@
 #include <string.h>
 #include "myTunes.h"
 
-
 void print_list(struct song_node *n) {
   char s[500] = "";
   struct song_node *x = n;
@@ -23,7 +22,7 @@ void print_list(struct song_node *n) {
 }
 
 void print_artist(char *a) {
-  int f = a[0]-97;
+  int f = a[0]-65;
   char s[500] = "";
   struct song_node *x = table[f];
   if(strcmp(x->artist,a) == 0) {
@@ -123,7 +122,7 @@ struct song_node * insert_ordered(struct song_node *n, char *na, char *a, int so
         }
 
       }
-    }
+    }//notes:  Does not compile/
     else {
       if(strcmp(x->name,n->name) < 0) {
         x->next = n;
@@ -230,7 +229,7 @@ struct song_node * remove_list(int f, struct song_node *n, char *na, char *a) {
 }
 
 void remove_library(char *na, char *a) {
-    int f = a[0]-97;
+    int f = a[0]-65;
     remove_list(f,table[f],na,a);
 }
 
@@ -250,7 +249,7 @@ struct song_node * find_list(struct song_node *n,char *na, char *a) {
 
 
 struct song_node * find_library(char *na, char *a) {
-    int f = a[0]-97;
+    int f = a[0]-65;
     if(f<26 && f>=0) {
         return find_list(table[f],na,a);
     }
@@ -275,7 +274,7 @@ struct song_node * find_artist_song(struct song_node *n, char *a) {
 }
 
 struct song_node * find_artist(struct song_node *n, char *a) {
-    int f = a[0]-97;
+    int f = a[0]-65;
     if(f<26 && f>=0) {
         return find_artist_song(table[f],a);
     }
@@ -286,14 +285,14 @@ struct song_node * find_artist(struct song_node *n, char *a) {
 }
 
 void print_artist_letter(char x) {
-    int f = x-97;
+    int f = x-65;
     if(f<26 && f>=0) {
         return print_list(table[f]);
     }
     else {
         return print_list(table[26]);
     }
-    
+
 }
 
 struct song_node * random_list(struct song_node *n) {
@@ -310,7 +309,7 @@ struct song_node * random_list(struct song_node *n) {
 
 
 void add(char *na, char *a) {
-  int f = a[0]-97;
+  int f = a[0]-65;
   if(f<26 && f>=0) {
     if(table[f]) {
       table[f] = insert_ordered(table[f],na,a,0);
@@ -333,4 +332,3 @@ void add(char *na, char *a) {
   }
 
 }
-
