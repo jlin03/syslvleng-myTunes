@@ -169,6 +169,7 @@ struct song_node * insert_ordered(struct song_node *n, char *na, char *a, int so
       }
       else {
         n->next = x;
+        return n;
       }
     }
 
@@ -207,6 +208,7 @@ struct song_node * remove_list(int f, struct song_node *n, char *na, char *a) {
   if(strcmp(a,n->artist) == 0 && strcmp(na,n->name) == 0) {
     if(n->next) {
         struct song_node *newStart = n->next;
+        table[f] = newStart;
         free(n);
         return newStart;
     }
@@ -222,6 +224,7 @@ struct song_node * remove_list(int f, struct song_node *n, char *na, char *a) {
       if(strcmp(a,x->artist) == 0 && strcmp(na,x->name) == 0) {
         current->next = x->next;
         free(x);
+        return n;
       }
     }
     return n;
