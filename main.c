@@ -7,7 +7,6 @@
 int main() {
   srand(time(NULL));
 
-  printf("Adding: ");
 
   printf("Adding: The Rolling Stones | Miss You\n");
   add("Miss You","The Rolling Stones");
@@ -25,16 +24,16 @@ int main() {
   add("White Rabbit","Jefferson Airplane");
   printf("Adding: Rick James | Super Freak\n");
   add("Super Freak","Rick James");
-  printf("Adding: The Beatles | Rain\n");
+  printf("Adding: The Beatles | Rain\n\n");
   add("Rain","The Beatles");
 
   print_all();
 
   struct song_node *r = malloc(sizeof(struct song_node));
   r = find_library("Rain","The Beatles");
-  printf("\n%s | %s is located on: %p\n",r->artist,r->name,r);
+  printf("\n\n%s | %s is located on: %p\n\n",r->artist,r->name,r);
 
-  printf("\nShuffling songs:");
+  printf("\nShuffling songs:\n");
   shuffle();
 
   printf("\n\nRemoving: The Beatles | Rain\n");
